@@ -108,7 +108,7 @@ class PoissonRegression:
 if __name__ == "__main__":
     main(
         lr=1e-5,
-        train_path="/Users/theboss/Downloads/CS229/ps1/src/poisson/train.csv",
-        eval_path="/Users/theboss/Downloads/CS229/ps1/src/poisson/valid.csv",
-        save_path="/Users/theboss/Downloads/CS229/ps1/src/poisson/poisson_pred.txt",
+        train_path="/Users/theboss/Documents/GitHub/CS229/pset-1/poisson/train.csv",
+        eval_path="/Users/theboss/Documents/GitHub/CS229/pset-1/poisson/valid.csv",
+        save_path="/Users/theboss/Documents/GitHub/CS229/pset-1/poisson/poisson_pred.txt",
     )

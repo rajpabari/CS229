@@ -2,10 +2,11 @@ import util
 import numpy as np
 import matplotlib.pyplot as plt
 
-np.seterr(all='raise')
+np.seterr(all="raise")
 
 
 factor = 2.0
+
 
 class LinearModel(object):
     """Base class for linear models."""
@@ -27,7 +28,7 @@ class LinearModel(object):
         """
         # *** START CODE HERE ***
 
-        self.theta = np.linalg.solve(np.matmul(X.T,X), np.matmul(X.T,y))
+        self.theta = np.linalg.solve(np.matmul(X.T, X), np.matmul(X.T, y))
         # *** END CODE HERE ***
 
     def create_poly(self, k, X):
@@ -75,32 +76,33 @@ class LinearModel(object):
 def feature_map(train_x):
     x_hat = np.ones((len(train_x), 4))
     for idx, val in enumerate(x_hat):
-        for i in range(1,len(val)):
-             x_hat[idx][i] = train_x[idx][1]**i
+        for i in range(1, len(val)):
+            x_hat[idx][i] = train_x[idx][1] ** i
     return x_hat
 
-def run_exp(train_path, sine=False, ks=[1, 2, 3, 5, 10, 20], filename='plot.png'):
-    train_x,train_y=util.load_dataset(train_path,add_intercept=True)
+
+def run_exp(train_path, sine=False, ks=[1, 2, 3, 5, 10, 20], filename="plot.png"):
+    train_x, train_y = util.load_dataset(train_path, add_intercept=True)
     plot_x = np.ones([1000, 2])
-    plot_x[:, 1] = np.linspace(-factor*np.pi, factor*np.pi, 1000)
+    plot_x[:, 1] = np.linspace(-factor * np.pi, factor * np.pi, 1000)
     plt.figure()
     plt.scatter(train_x[:, 1], train_y)
 
     for k in ks:
-        '''
+        """
         Our objective is to train models and perform predictions on plot_x data
-        '''
+        """
         # *** START CODE HERE ***
         model = LinearModel()
         input_x = feature_map(train_x)
         model.fit(input_x, train_y)
         plot_y = model.predict(feature_map(plot_x))
         # *** END CODE HERE ***
-        '''
+        """
         Here plot_y are the predictions of the linear model on the plot_x data
-        '''
+        """
         plt.ylim(-2, 2)
-        plt.plot(plot_x[:, 1], plot_y, label='k=%d' % k)
+        plt.plot(plot_x[:, 1], plot_y, label="k=%d" % k)
 
     plt.legend()
     plt.savefig(filename)
@@ -108,14 +110,17 @@ def run_exp(train_path, sine=False, ks=[1, 2, 3, 5, 10, 20], filename='plot.png'
 
 
 def main(train_path, small_path, eval_path):
-    '''
+    """
     Run all expetriments
-    '''
+    """
     # *** START CODE HERE ***
     run_exp(train_path)
     # *** END CODE HERE ***
 
-if __name__ == '__main__':
-    main(train_path='/Users/theboss/Downloads/CS229/ps1/src/featuremaps/train.csv',
-        small_path='/Users/theboss/Downloads/CS229/ps1/src/featuremaps/small.csv',
-        eval_path='/Users/theboss/Downloads/CS229/ps1/src/featuremaps/test.csv')
+
+if __name__ == "__main__":
+    main(
+        train_path="/Users/theboss/Documents/GitHub/CS229/pset-1/featuremaps/train.csv",
+        small_path="/Users/theboss/Documents/GitHub/CS229/pset-1/featuremaps/small.csv",
+        eval_path="/Users/theboss/Documents/GitHub/CS229/pset-1/featuremaps/test.csv",
+    )
