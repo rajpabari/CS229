@@ -103,9 +103,9 @@ def run_exp(
         """
         # *** START CODE HERE ***
         model = LinearModel()
-        input_x = model.create_sin(train_x, k)
+        input_x = model.create_poly(train_x, k)
         model.fit(input_x, train_y)
-        plot_y = model.predict(model.create_sin(plot_x, k))
+        plot_y = model.predict(model.create_poly(plot_x, k))
         # *** END CODE HERE ***
         """
         Here plot_y are the predictions of the linear model on the plot_x data
@@ -123,7 +123,7 @@ def main(train_path, small_path, eval_path):
     Run all expetriments
     """
     # *** START CODE HERE ***
-    run_exp(train_path)
+    run_exp(train_path, ks=[1, 2, 5, 10, 20])
     # *** END CODE HERE ***
 
 
