@@ -48,15 +48,22 @@ class LinearModel(object):
         return x_hat
         # *** END CODE HERE ***
 
-    def create_sin(self, k, X):
+    def create_sin(self, train_x, k):
         """
-        Generates a sin with polynomial featuremap to the data x.
+        Generates a sin feature map using the data x.
+        The polynomial map should have powers from 0 to k
         Output should be a numpy array whose shape is (n_examples, k+2)
 
         Args:
             X: Training example inputs. Shape (n_examples, 2).
         """
         # *** START CODE HERE ***
+        x_hat = np.ones((len(train_x), k + 1))
+        for idx, val in enumerate(x_hat):
+            x_hat[idx][-1] = np.sin(train_x[idx][1])
+            for i in range(1, len(val) - 1):
+                x_hat[idx][i] = train_x[idx][1] ** i
+        return x_hat
         # *** END CODE HERE ***
 
     def predict(self, X):
@@ -96,9 +103,9 @@ def run_exp(
         """
         # *** START CODE HERE ***
         model = LinearModel()
-        input_x = model.create_poly(train_x, k)
+        input_x = model.create_sin(train_x, k)
         model.fit(input_x, train_y)
-        plot_y = model.predict(model.create_poly(plot_x, k))
+        plot_y = model.predict(model.create_sin(plot_x, k))
         # *** END CODE HERE ***
         """
         Here plot_y are the predictions of the linear model on the plot_x data
