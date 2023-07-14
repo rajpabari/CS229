@@ -31,7 +31,7 @@ class LinearModel(object):
         self.theta = np.linalg.solve(np.matmul(X.T, X), np.matmul(X.T, y))
         # *** END CODE HERE ***
 
-    def create_poly(self, k, X):
+    def create_poly(self, train_x, k):
         """
         Generates a polynomial feature map using the data x.
         The polynomial map should have powers from 0 to k
@@ -41,6 +41,11 @@ class LinearModel(object):
             X: Training example inputs. Shape (n_examples, 2).
         """
         # *** START CODE HERE ***
+        x_hat = np.ones((len(train_x), k))
+        for idx, val in enumerate(x_hat):
+            for i in range(1, len(val)):
+                x_hat[idx][i] = train_x[idx][1] ** i
+        return x_hat
         # *** END CODE HERE ***
 
     def create_sin(self, k, X):
@@ -73,15 +78,12 @@ class LinearModel(object):
         # *** END CODE HERE ***
 
 
-def feature_map(train_x):
-    x_hat = np.ones((len(train_x), 4))
-    for idx, val in enumerate(x_hat):
-        for i in range(1, len(val)):
-            x_hat[idx][i] = train_x[idx][1] ** i
-    return x_hat
-
-
-def run_exp(train_path, sine=False, ks=[1, 2, 3, 5, 10, 20], filename="plot.png"):
+def run_exp(
+    train_path,
+    sine=False,
+    ks=[1, 2, 3, 5, 10, 20],
+    filename="./pset-1/featuremaps/plot.png",
+):
     train_x, train_y = util.load_dataset(train_path, add_intercept=True)
     plot_x = np.ones([1000, 2])
     plot_x[:, 1] = np.linspace(-factor * np.pi, factor * np.pi, 1000)
@@ -94,9 +96,9 @@ def run_exp(train_path, sine=False, ks=[1, 2, 3, 5, 10, 20], filename="plot.png"
         """
         # *** START CODE HERE ***
         model = LinearModel()
-        input_x = feature_map(train_x)
+        input_x = model.create_poly(train_x, k)
         model.fit(input_x, train_y)
-        plot_y = model.predict(feature_map(plot_x))
+        plot_y = model.predict(model.create_poly(plot_x, k))
         # *** END CODE HERE ***
         """
         Here plot_y are the predictions of the linear model on the plot_x data
