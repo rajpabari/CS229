@@ -1,8 +1,10 @@
 import numpy as np
 
+
 class LogisticRegression:
-    def __init__(self, step_size=1, max_iter=1000000, eps=1e-5,
-                 theta_0=None, verbose=True):
+    def __init__(
+        self, step_size=1, max_iter=1000000, eps=1e-5, theta_0=None, verbose=True
+    ):
         self.theta = theta_0
         self.step_size = step_size
         self.max_iter = max_iter
@@ -23,14 +25,15 @@ class LogisticRegression:
 
             loss = self._loss(x, y)
             if self.verbose:
-                print('[iter: {:02d}, loss: {:.7f}]'.format(i, loss))
+                print("[iter: {:02d}, loss: {:.7f}]".format(i, loss))
 
             if np.sum(np.abs(prev_theta - self.theta)) < self.eps:
                 break
 
         if self.verbose:
-            print('Final theta (logreg): {}'.format(self.theta))
-        
+            print("Final theta (logreg): {}".format(self.theta))
+        return self.theta
+
     def predict(self, x):
         y_hat = self._sigmoid(x.dot(self.theta))
         return y_hat
@@ -47,7 +50,7 @@ class LogisticRegression:
         m, _ = x.shape
 
         probs = self._sigmoid(x.dot(self.theta))
-        diag = np.diag(probs * (1. - probs))
+        diag = np.diag(probs * (1.0 - probs))
         hess = 1 / m * x.T.dot(diag).dot(x)
 
         return hess
