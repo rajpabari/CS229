@@ -64,22 +64,40 @@ def main(train_path, validation_path, save_path, plot_path):
     """
     output_path_naive = save_path.replace(WILDCARD, "naive")
     output_path_upsampling = save_path.replace(WILDCARD, "upsampling")
+    plot_path_upsampling = plot_path.replace(WILDCARD, "upsampling")
+    plot_path_naive = plot_path.replace(WILDCARD, "naive")
 
     train_x, train_y = util.load_dataset(train_path, add_intercept=True)
     eval_x, eval_y = util.load_dataset(validation_path, add_intercept=True)
 
     # *** START CODE HERE ***
     # Part (b): Vanilla logistic regression
-    model = LogisticRegression(verbose=True)
+    model = LogisticRegression(verbose=False)
     theta = model.fit(train_x, train_y)
     eval_results = eval(model, eval_x, eval_y)
-    print(eval_results)
+    print("EVAL NAIVE REGRESSION\n", eval_results)
     np.savetxt(output_path_naive, np.array([eval_y, eval_results["raw_preds"]]))
 
-    util.plot(eval_x, eval_y, theta, plot_path)
+    util.plot(eval_x, eval_y, theta, plot_path_naive)
 
     # Make sure to save predicted probabilities to output_path_naive using np.savetxt()
     # Part (d): Upsampling minority class
+    upsampled_x = train_x
+    upsampled_y = train_y
+    for idx, val in enumerate(train_y):
+        if val == 1:
+            for i in range(int(1 / kappa)):
+                upsampled_x = np.append(upsampled_x, [train_x[idx]], axis=0)
+                upsampled_y = np.append(upsampled_y, val)
+
+    upsampled_model = LogisticRegression(verbose=True)
+    theta_u = upsampled_model.fit(upsampled_x, upsampled_y)
+    eval_results_u = eval(upsampled_model, eval_x, eval_y)
+    print("EVAL UPSAMPLED REGRESSION\n", eval_results_u)
+    np.savetxt(output_path_upsampling, np.array([eval_y, eval_results_u["raw_preds"]]))
+
+    util.plot(eval_x, eval_y, theta_u, plot_path_upsampling)
+
     # Make sure to save predicted probabilities to output_path_upsampling using np.savetxt()
     # Repeat minority examples 1 / kappa times
     # *** END CODE HERE
@@ -90,5 +108,5 @@ if __name__ == "__main__":
         train_path="/Users/theboss/Documents/GitHub/CS229/pset-1/imbalanced/train.csv",
         validation_path="/Users/theboss/Documents/GitHub/CS229/pset-1/imbalanced/validation.csv",
         save_path="/Users/theboss/Documents/GitHub/CS229/pset-1/imbalanced/imbalanced_X_pred.txt",
-        plot_path="/Users/theboss/Documents/GitHub/CS229/pset-1/imbalanced/plot.png",
+        plot_path="/Users/theboss/Documents/GitHub/CS229/pset-1/imbalanced/plot_X.png",
     )
